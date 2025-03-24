@@ -1,4 +1,3 @@
-require('./helpers.js');
 require('./helpers');
 const chai = require('chai');
 const spies = require('chai-spies');
@@ -8,7 +7,6 @@ chai.use(spies);
 const rando = Math.ceil(Math.random() * 1000);
 
 describe("submitData()", () => {
-  let xhr, requests;
   beforeEach(function () {
     window.fetch = require('node-fetch');
     chai.spy.on(window, 'fetch');
@@ -23,10 +21,7 @@ describe("submitData()", () => {
       .reply(201, function (uri, requestBody) {
         reqBody = requestBody;
         headers = this.req.headers;
-        return {
-          id: rando,
-          ...requestBody
-        };
+        return { id: rando, ...requestBody };
       });
 
     let name = "Steve";
@@ -46,10 +41,7 @@ describe("submitData()", () => {
     nock('http://localhost:3000')
       .post('/users')
       .reply(201, function (uri, requestBody) {
-        return {
-          id: rando,
-          ...requestBody
-        };
+        return { id: rando, ...requestBody };
       });
 
     let name = "Sam";
@@ -63,10 +55,7 @@ describe("submitData()", () => {
     let message = 'Unauthorized Access';
     nock('http://localhost:3000')
       .post('/users')
-      .replyWithError({
-        message: message,
-        code: '401',
-      });
+      .replyWithError({ message: message, code: '401' });
 
     let name = "Jim";
     let email = "jim@jim.com";
